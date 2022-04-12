@@ -29,4 +29,7 @@ public class Users {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Roles> roles = new HashSet<>();
 
+    @Transient
+    private String token;
+
 }

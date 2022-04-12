@@ -15,7 +15,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service("jpaUserDetailService")
@@ -32,11 +35,9 @@ public class JpaUserDetailService implements UserDetailsService {
 
 
         Users user =  _repository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException(username));
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-        for(Roles role : user.getRoles()){
-            authorities.add(new SimpleGrantedAuthority(role.getName().toString()));
-        }
+        Set<GrantedAuthority> authorities =  user.getRoles().stream().map(x-> new SimpleGrantedAuthority(x.getName().toString()))
+                                   .collect(Collectors.toSet());
 
         log.debug(authorities.toString());
        if(authorities.isEmpty()) {

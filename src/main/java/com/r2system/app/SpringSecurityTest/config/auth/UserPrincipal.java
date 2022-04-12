@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -17,8 +18,9 @@ import java.util.List;
 @Builder
 public class UserPrincipal  implements UserDetails {
 
+    private Long id;
     transient private Users user; //user for only login operation, don't use in JWT.
-    private List<GrantedAuthority> authorities;
+    private Set<GrantedAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
